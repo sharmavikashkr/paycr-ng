@@ -1,0 +1,205 @@
+<div>
+  <div class="panel-body" *ngIf="merchant">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card card-warning">
+          <div class="card-header with-border">
+            <div class="form-group">
+              <div class="image-upload">
+                <div class="col-xs-3">
+                  <label for="file-input" title="Upload new Banner">
+                    <img src="{{appUrl}}/banner/merchant/{{merchant.accessKey}}/{{merchant.banner}}"
+                      style="max-height:50px;max-width:50px;" alt="Banner (80x80)" />
+                  </label>
+                  <input id="file-input" style="display:none;" type="file"
+                    onchange="angular.element(this).scope().uploadBanner(this.files)" (click)="clearInputFiles()"
+                    accept=".png,.jpg" />
+                </div>
+                <div class="col-xs-9">
+                  <small>(Banner will appear on your payment checkout screens)</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="card card-warning">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-8">
+                <h5 class="card-title">Account</h5>
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-flat btn-sm btn-warning pull-right" (click)="editAccSets = !editAccSets"
+                  title="Edit Settings">
+                  <i class="fa fa-pencil fa-xs"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <form #accountForm='ngForm'>
+              <fieldset [disabled]="!editAccSets">
+                <div class="form-group">
+                  <label class="control-label">Name</label>
+                  <input class="form-control" name="merchantName" [(ngModel)]="merchant.name" type="text"
+                    pattern="{{patterns.namePattern}}" required />
+                </div>
+                <div class="form-group">
+                  <label class="control-label">GSTIN</label>
+                  <input class="form-control" name="merchantGstin" [(ngModel)]="merchant.gstin" type="text"
+                    pattern="{{patterns.gstinPattern}}" required />
+                </div>
+              </fieldset>
+              <fieldset disabled>
+                <div class="form-group">
+                  <label class="control-label">Email</label>
+                  <input class="form-control" value="{{merchant.email}}" />
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Mobile</label>
+                  <input class="form-control" value="{{merchant.mobile}}" />
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div *ngIf="editAccSets" class="card-footer">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button [disabled]="!accountForm.valid" (click)="updateAccount(accountForm)"
+                  class="btn btn-info">Save</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-warning">
+          <div class="card-header with-border">
+            <div class="row">
+              <div class="col-md-8">
+                <h5 class="card-title">Address</h5>
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-flat btn-sm btn-warning pull-right" (click)="setDefaultAddress()"
+                  title="Edit Address">
+                  <i class="fa fa-pencil"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p *ngIf="merchant.address != null">
+              {{merchant.address.addressLine1}},<br>
+              {{merchant.address.addressLine2}},<br>
+              {{merchant.address.city}},<br>
+              {{merchant.address.state}} - {{merchant.address.pincode}},<br>
+              {{merchant.address.country}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div bsModal #editAccAddressModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" *ngIf="address">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Address <span><strong>{{merchant.name}}</strong></span></h5>
+        <button type="button" (click)="editAccAddressModal.hide()" title="Close"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <form #editAddressForm="ngForm">
+              <table class="table table-striped table-bordered table-responsive">
+                <tbody>
+                  <tr>
+                    <td><strong>Address Line 1</strong></td>
+                    <td>
+                      <div class="form-group"><input name="line1" class="form-control"
+                          [(ngModel)]="address.addressLine1" required /></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Address Line 2</strong></td>
+                    <td><input name="line2" class="form-control" [(ngModel)]="address.addressLine2" /></td>
+                  </tr>
+                  <tr>
+                    <td><strong>City</strong> : <div class="form-group"><input name="city" class="form-control"
+                          [(ngModel)]="address.city" required /></div>
+                    </td>
+                    <td>
+                      <strong>State</strong> :
+                      <div class="form-group">
+                        <select name="state" class="form-control" [(ngModel)]="address.state" required>
+                          <option value="" selected>-------Select State-------</option>
+                          <option value="Andaman and Nicobar Islands (35)">Andaman and Nicobar Islands</option>
+                          <option value="Andhra Pradesh (37)">Andhra Pradesh</option>
+                          <option value="Arunachal Pradesh (12)">Arunachal Pradesh</option>
+                          <option value="Assam (18)">Assam</option>
+                          <option value="Bihar (10)">Bihar</option>
+                          <option value="Chandigarh (04)">Chandigarh</option>
+                          <option value="Chhattisgarh (22)">Chhattisgarh</option>
+                          <option value="Dadra and Nagar Haveli (26)">Dadra and Nagar Haveli</option>
+                          <option value="Daman and Diu (25)">Daman and Diu</option>
+                          <option value="Delhi (07)">Delhi</option>
+                          <option value="Goa (30)">Goa</option>
+                          <option value="Gujarat (24)">Gujarat</option>
+                          <option value="Haryana (06)">Haryana</option>
+                          <option value="Himachal Pradesh (02)">Himachal Pradesh</option>
+                          <option value="Jammu and Kashmir (01)">Jammu and Kashmir</option>
+                          <option value="Jharkhand (20)">Jharkhand</option>
+                          <option value="Karnataka (29)">Karnataka</option>
+                          <option value="Kerala (32)">Kerala</option>
+                          <option value="Lakshadweep (31)">Lakshadweep</option>
+                          <option value="Madhya Pradesh (23)">Madhya Pradesh</option>
+                          <option value="Maharashtra (27)">Maharashtra</option>
+                          <option value="Manipur (14)">Manipur</option>
+                          <option value="Meghalaya (17)">Meghalaya</option>
+                          <option value="Mizoram (15)">Mizoram</option>
+                          <option value="Nagaland (13)">Nagaland</option>
+                          <option value="Orissa (21)">Odisha</option>
+                          <option value="Pondicherry (34)">Pondicherry</option>
+                          <option value="Punjab (03)">Punjab</option>
+                          <option value="Rajasthan (08)">Rajasthan</option>
+                          <option value="Sikkim (11)">Sikkim</option>
+                          <option value="Tamil Nadu (33)">Tamil Nadu</option>
+                          <option value="Telangana (36)">Telangana</option>
+                          <option value="Tripura (16)">Tripura</option>
+                          <option value="Uttaranchal (05)">Uttaranchal</option>
+                          <option value="Uttar Pradesh (09)">Uttar Pradesh</option>
+                          <option value="West Bengal (19)">West Bengal</option>
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pincode</strong> : <div class="form-group"><input name="pincode" class="form-control"
+                          [(ngModel)]="address.pincode" required /></div>
+                    </td>
+                    <td>
+                      <strong>Country</strong> :
+                      <div class="form-group">
+                        <select name="country" class="form-control" [(ngModel)]="address.country" required>
+                          <option value="" selected>-------Select Country------</option>
+                          <option value="India">India</option>
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" (click)="saveAddress()"
+          [disabled]="!editAddressForm.valid">Save</button>
+        <button type="button" class="btn btn-danger" (click)="editAccAddressModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

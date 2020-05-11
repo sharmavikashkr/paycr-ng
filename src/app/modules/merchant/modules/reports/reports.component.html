@@ -1,0 +1,125 @@
+<div>
+  <div class="row">
+    <div class="col-sm-3 col-sm-offset-8">
+      <button class="btn btn-info" data-toggle="modal" data-target="#createReportModal">
+        <i class="fa fa-plus"></i> Report
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4" *ngFor="let report of reports">
+      <br>
+      <div class="card-header" [ngClass]="{'bg-primary': report.schedule == null, 'bg-danger':report.schedule != null}"
+        style="border: 1px solid black;">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="font-weight-bold">
+              <span>{{report.name}}</span>
+            </div>
+            <div style="color: black;">
+              <span><small>{{report.description}}</small></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1 col-xs-2">
+            <button type="button" class="btn btn-transparent p-0" title="Report Info"
+              (click)="report.expanded = !report.expanded">
+              <i class="icon-info"></i>
+            </button>
+          </div>
+          <div class="col-md-1 col-xs-2">
+            <button type="button" class="btn btn-transparent p-0" title="Load Report" (click)="loadReport(report)">
+              <i class="fa fa-refresh"></i>
+            </button>
+          </div>
+          <div class="col-md-1 col-xs-2" *ngIf="report.schedule == null">
+            <button type="button" class="btn btn-transparent p-0" title="Schedule Report"
+              (click)="scheduleReport(report.id)">
+              <i class="fa fa-clock-o"></i>
+            </button>
+          </div>
+          <div class="col-md-1 col-xs-2" *ngIf="report.schedule != null">
+            <button type="button" class="btn btn-transparent p-0" title="Remove Schedule"
+              (click)="removeSchedule(report.id)">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+          <div class="col-md-1 col-xs-2" *ngIf="report.merchant != null">
+            <button type="button" class="btn btn-transparent p-0" title="Delete Report"
+              (click)="deleteReport(report.id)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="chart-wrapper" style="height:38px;">
+          <canvas baseChart class="chart" [datasets]="lineChart4Data" [labels]="lineChart4Labels"
+            [options]="lineChart4Options" [colors]="lineChart4Colours" [legend]="lineChart4Legend"
+            [chartType]="lineChart4Type"></canvas>
+        </div>
+        <div class="chart-wrapper" style="height:38px;">
+          <canvas baseChart class="chart" [datasets]="barChart1Data" [labels]="barChart1Labels"
+            [options]="barChart1Options" [colors]="barChart1Colours" [legend]="barChart1Legend"
+            [chartType]="barChart1Type"></canvas>
+        </div>
+        <div *ngIf="report.expanded">
+          <hr>
+          <div>
+            <small>
+              <div class="row">
+                <div class="col-md-6">
+                  <p style="color:black;">Invoice Details</p>
+                  <div>Report Type: <span style="color:black;">{{report.reportType}}</span></div>
+                  <div>Time Range: <span style="color:black;">{{report.timeRange}}</span></div>
+                  <div *ngIf="report.payType != null">Pay Type: <span style="color:black;">{{report.payType}}</span>
+                  </div>
+                  <div *ngIf="report.payMode != null">Pay Mode: <span style="color:black;">{{rreport.payMode}}</span>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="report.schedule != null">
+                  <p style="color:black;">Schedule Details</p>
+                  <div>Start Date: <span style="color:black;">{{report.schedule.startDate | date:'dd-MM-yyyy'}}</span>
+                  </div>
+                  <div>Next Date: <span style="color:black;">{{report.schedule.nextDate | date:'dd-MM-yyyy'}}</span>
+                  </div>
+                </div>
+              </div>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row" *ngIf="loadedReport != null">
+    <div class="col-md-12">
+      <div class="box box-success text-center">
+        <div class="box-header with-border">
+          <h5 class="box-title">{{loadedReport.name}}</h5>
+          <div class="box-tools pull-right">
+            <button title="Download CSV" class="btn btn-success btn-sm" ng-click="downloadReport(loadedReport)"><i
+                class="fa fa-download"></i></button>
+            <button title="Mail CSV" class="btn btn-danger btn-sm" ng-click="mailReport(loadedReport)"><i
+                class="fa fa-envelope"></i></button>
+          </div>
+        </div>
+        <div class="box-body" *ngIf="loadedReportData != null && loadedReportData.length > 0">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <td class="text-center" *ngFor="let prop of loadedReportData[0] | keyvalue">
+                  <strong>{{prop.key}}</strong>
+                </td>
+              </tr>
+            </thead>
+            <tbody id="itemBody">
+              <tr *ngFor="let loaded of loadedReportData">
+                <td class="hidden-xs" *ngFor="let prop of loaded | keyvalue">{{loaded[prop.key]}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
