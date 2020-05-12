@@ -18,11 +18,11 @@ export class ReportsService {
   }
 
   scheduleReport(reportId: number): Observable<any> {
-    return this.httpClient.get<any>(environment.APP_URL + '/reports/schedule/add/' + reportId);
+    return this.httpClient.get<any>(environment.APP_URL + '/schedule/add/' + reportId);
   }
 
   removeSchedule(reportId: number): Observable<any> {
-    return this.httpClient.delete<any>(environment.APP_URL + '/reports/schedule/remove/' + reportId);
+    return this.httpClient.delete<any>(environment.APP_URL + '/schedule/remove/' + reportId);
   }
 
   deleteReport(reportId: number): Observable<any> {
