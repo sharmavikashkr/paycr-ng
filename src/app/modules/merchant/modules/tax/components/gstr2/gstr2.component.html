@@ -1,0 +1,215 @@
+<div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-4 col-xs-6">
+        <mat-form-field>
+          <mat-label>Month and Year</mat-label>
+          <input matInput [matDatepicker]="dp" [formControl]="date">
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
+            (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
+          </mat-datepicker>
+        </mat-form-field>&nbsp;&nbsp;
+        <button title="Load" class="btn btn-primary" [disabled]="period == null" (click)="loadGstr2Report()"
+          style="vertical-align: top;">Load</button>
+      </div>
+      <div class="col-md-4 hidden-xs text-center">
+        <div *ngIf="gstr2Report != null">
+          <strong>{{period}}</strong>
+        </div>
+      </div>
+      <div class="col-md-4 col-xs-6">
+        <div class="pull-right">
+          <button title="Download" class="btn btn-flat btn-success btn-sm" [disabled]="period == null"
+            (click)="downloadGstr2Report(period)"><i class="fa fa-download"></i></button>
+          <button title="Mail" class="btn btn-flat btn-danger btn-sm" [disabled]="period == null"
+            (click)="mailGstr2Report(period)"><i class="fa fa-envelope"></i></button>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row" *ngIf="gstr2Report != null" style="font-size:12px;">
+      <div class="col-md-12">
+        <div *ngIf="gstr2Report.b2bUr != null" class="box box-success text-center">
+          <div class="box-header with-border">
+            <h5 class="box-title">GSTR2 B2B UnRegistered</h5>
+          </div>
+          <div class="box-body">
+            <table datatable class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th class="text-center">Invoice No</th>
+                  <th class="text-center">Taxable Amount</th>
+                  <th class="text-center">Invoice Amount</th>
+                  <th class="text-center hidden-xs">Invoice Date</th>
+                  <th class="text-center hidden-xs">Place Of Supply</th>
+                  <th class="text-center hidden-xs">Supply Type</th>
+                  <th class="text-center hidden-xs">Tax</th>
+                </tr>
+              </thead>
+              <tbody id="itemBody">
+                <tr class="bg-olive" *ngFor="let b2bUr of gstr2Report.b2bUr">
+                  <td>{{b2bUr.invoiceNo}}</td>
+                  <td>{{b2bUr.taxableAmount}}</td>
+                  <td>{{b2bUr.invoiceAmount}}</td>
+                  <td class="hidden-xs">{{b2bUr.invoiceDate | date:'dd-MM-yyyy'}}</td>
+                  <td class="hidden-xs">{{b2bUr.placeOfSupply}}</td>
+                  <td class="hidden-xs">{{b2bUr.supplyType}}</td>
+                  <td class="hidden-xs">
+                    <div *ngFor="let taxAmt of b2bUr.taxAmount">{{taxAmt.tax.name}} {{taxAmt.tax.value}}% -
+                      {{taxAmt.amount}}</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="gstr2Report.b2bR != null" class="box box-success text-center">
+          <div class="box-header with-border">
+            <h5 class="box-title">GSTR2 B2B Registered</h5>
+          </div>
+          <div class="box-body">
+            <table datatable class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th class="text-center hidden-xs">GSTIN</th>
+                  <th class="text-center">Invoice No</th>
+                  <th class="text-center">Taxable Amount</th>
+                  <th class="text-center">Invoice Amount</th>
+                  <th class="text-center hidden-xs">Invoice Date</th>
+                  <th class="text-center hidden-xs">Place Of Supply</th>
+                  <th class="text-center hidden-xs">Supply Type</th>
+                  <th class="text-center hidden-xs">Tax</th>
+                </tr>
+              </thead>
+              <tbody id="itemBody">
+                <tr class="bg-olive" *ngFor="let b2b of gstr2Report.b2bR">
+                  <td class="hidden-xs">{{b2b.gstin}}</td>
+                  <td>{{b2b.invoiceNo}}</td>
+                  <td>{{b2b.taxableAmount}}</td>
+                  <td>{{b2b.invoiceAmount}}</td>
+                  <td class="hidden-xs">{{b2b.invoiceDate | date:'dd-MM-yyyy'}}</td>
+                  <td class="hidden-xs">{{b2b.placeOfSupply}}</td>
+                  <td class="hidden-xs">{{b2b.supplyType}}</td>
+                  <td class="hidden-xs">
+                    <div *ngFor="let taxAmt of b2b.taxAmount">{{taxAmt.tax.name}} {{taxAmt.tax.value}}% -
+                      {{taxAmt.amount}}</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="gstr2Report.b2bUrNote != null" class="box box-success text-center">
+          <div class="box-header with-border">
+            <h5 class="box-title">GSTR2 B2B UnRegistered Note</h5>
+          </div>
+          <div class="box-body">
+            <table datatable class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th class="text-center hidden-xs">GSTIN</th>
+                  <th class="text-center">Note No</th>
+                  <th class="text-center">Taxable Amount</th>
+                  <th class="text-center">Note Amount</th>
+                  <th class="text-center hidden-xs">Note Date</th>
+                  <th class="text-center">Note Type</th>
+                  <th class="text-center hidden-xs">Invoice No</th>
+                  <th class="text-center hidden-xs">Invoice Date</th>
+                  <th class="text-center hidden-xs">Supply Type</th>
+                  <th class="text-center hidden-xs">Note Reason</th>
+                  <th class="text-center hidden-xs">Tax</th>
+                </tr>
+              </thead>
+              <tbody id="itemBody">
+                <tr class="bg-olive" *ngFor="let b2bUrNote of gstr2Report.b2bUrNote">
+                  <td class="hidden-xs">{{b2bUrNote.gstin}}</td>
+                  <td>{{b2bUrNote.noteNo}}</td>
+                  <td>{{b2bUrNote.taxableAmount}}</td>
+                  <td>{{b2bUrNote.noteAmount}}</td>
+                  <td class="hidden-xs">{{b2bUrNote.noteDate | date:'dd-MM-yyyy'}}</td>
+                  <td>{{b2bUrNote.noteType}}</td>
+                  <td class="hidden-xs">{{b2bUrNote.invoiceNo}}</td>
+                  <td class="hidden-xs">{{b2bUrNote.invoiceDate | date:'dd-MM-yyyy'}}</td>
+                  <td class="hidden-xs">{{b2bUrNote.supplyType}}</td>
+                  <td class="hidden-xs">{{b2bUrNote.noteReason}}</td>
+                  <td class="hidden-xs">
+                    <div *ngFor="let taxAmt of b2bUrNote.taxAmount">{{taxAmt.tax.name}} {{taxAmt.tax.value}}% -
+                      {{taxAmt.amount}}</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="gstr2Report.b2bRNote != null" class="box box-success text-center">
+          <div class="box-header with-border">
+            <h5 class="box-title">GSTR2 B2B Registered Note</h5>
+          </div>
+          <div class="box-body">
+            <table datatable class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th class="text-center hidden-xs">GSTIN</th>
+                  <th class="text-center">Note No</th>
+                  <th class="text-center">Taxable Amount</th>
+                  <th class="text-center">Note Amount</th>
+                  <th class="text-center hidden-xs">Note Date</th>
+                  <th class="text-center">Note Type</th>
+                  <th class="text-center hidden-xs">Invoice No</th>
+                  <th class="text-center hidden-xs">Invoice Date</th>
+                  <th class="text-center hidden-xs">Supply Type</th>
+                  <th class="text-center hidden-xs">Note Reason</th>
+                  <th class="text-center hidden-xs">Tax</th>
+                </tr>
+              </thead>
+              <tbody id="itemBody">
+                <tr class="bg-olive" *ngFor="let b2bRNote of gstr2Report.b2bRNote">
+                  <td class="hidden-xs">{{b2bRNote.gstin}}</td>
+                  <td>{{b2bRNote.noteNo}}</td>
+                  <td>{{b2bRNote.taxableAmount}}</td>
+                  <td>{{b2bRNote.noteAmount}}</td>
+                  <td class="hidden-xs">{{b2bRNote.noteDate | date:'dd-MM-yyyy'}}</td>
+                  <td>{{b2bRNote.noteType}}</td>
+                  <td class="hidden-xs">{{b2bRNote.invoiceNo}}</td>
+                  <td class="hidden-xs">{{b2bRNote.invoiceDate | date:'dd-MM-yyyy'}}</td>
+                  <td class="hidden-xs">{{b2bRNote.supplyType}}</td>
+                  <td class="hidden-xs">{{b2bRNote.noteReason}}</td>
+                  <td class="hidden-xs">
+                    <div *ngFor="let taxAmt of b2bRNote.taxAmount">{{taxAmt.tax.name}} {{taxAmt.tax.value}}% -
+                      {{taxAmt.amount}}</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="gstr2Report.nil != null" class="box box-success text-center">
+          <div class="box-header with-border">
+            <h5 class="box-title">GSTR2 Nil</h5>
+          </div>
+          <div class="box-body">
+            <table datatable class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th class="text-center hidden-xs">Supply Type</th>
+                  <th class="text-center">Nil Rated</th>
+                  <th class="text-center">Exempted</th>
+                  <th class="text-center">Non GST</th>
+                </tr>
+              </thead>
+              <tbody id="itemBody">
+                <tr class="bg-olive" *ngFor="let nil of gstr2Report.nil">
+                  <td class="hidden-xs">{{nil.supplyType}}</td>
+                  <td>{{nil.nilRated}}</td>
+                  <td>{{nil.exempted}}</td>
+                  <td>{{nil.nonGst}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

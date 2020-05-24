@@ -1,204 +1,215 @@
 <div>
-	<div class="panel-body">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card card-warning">
-                    <div class="card-header with-border">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h5 class="card-title">Payment Setting</h5>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="pull-right">
-                                    <a href="https://razorpay.com/" target="_blank" class="btn btn-flat btn-sm btn-info" title="What is Razorpay?">
-                                        <i class="fa fa-question"></i>
-                                    </a>&nbsp;
-                                    <button class="btn btn-flat btn-sm btn-warning" (click)="editPaySets = !editPaySets" title="Edit Settings">
-                                        <i class="fa fa-pencil"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <fieldset [disabled]="!editPaySets">
-                            <div class="form-group">
-                                <label class="control-label">RazorPay Merchant Id</label>
-                                <input class="form-control" [(ngModel)]="merchant.paymentSetting.rzpMerchantId" />
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">RazorPay Key Id</label>
-                                <input class="form-control" [(ngModel)]="merchant.paymentSetting.rzpKeyId" />
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">RazorPay Secret Id</label>
-                                <input class="form-control" [(ngModel)]="merchant.paymentSetting.rzpSecretId" />
-                            </div>
-                        </fieldset>
-                    </div>
-                    <div *ngIf="editPaySets" class="card-footer">
-                        <div class="input-group">
-                            <span class="input-group-btn">
-                                <button (click)="savePaymentSetting()" class="btn btn-info">Save</button>
-                            </span>
-                        </div>
-                    </div>
+  <div class="panel-body" *ngIf="merchant.paymentSetting != null">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card card-warning">
+          <div class="card-header with-border">
+            <div class="row">
+              <div class="col-md-8">
+                <h5 class="card-title">Payment Setting</h5>
+              </div>
+              <div class="col-md-4">
+                <div class="pull-right">
+                  <a href="https://razorpay.com/" target="_blank" class="btn btn-flat btn-sm btn-info"
+                    title="What is Razorpay?">
+                    <i class="fa fa-question"></i>
+                  </a>&nbsp;
+                  <button class="btn btn-flat btn-sm btn-warning" (click)="editPaySets = !editPaySets"
+                    title="Edit Settings">
+                    <i class="fa fa-pencil"></i>
+                  </button>
                 </div>
-                <div class="card card-warning">
-                    <div class="card-header with-border">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h5 class="card-title">Custom Params</h5>
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn btn-flat btn-info btn-sm pull-right" (click)="newParamModal()" title="Add Param">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Param Name</th>
-                                    <th>Provider</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let param of merchant.invoiceSetting.customParams">
-                                    <td>{{param.paramName}}</td>
-                                    <td>{{param.provider}}</td>
-                                    <td>
-                                        <button (click)="deleteParam(param.id, param.paramName)" class="btn btn-flat btn-danger btn-sm">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+              </div>
             </div>
-            <div class="col-lg-6">
-                <div class="card card-warning">
-                    <div class="card-header with-border">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h5 class="card-title">Invoice Preference</h5>
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn btn-flat btn-warning btn-sm pull-right" (click)="editPayPrefs = !editPayPrefs" title="Edit Settings">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <form #payPrefsForm="ngForm">
-                            <fieldset [disabled]="!editPayPrefs">
-                                <table class="table table-striped table-bordered">
-                                    <tr>
-                                        <td>Send Email</td>
-                                        <td><input type="checkbox" name="sendEmail" [(ngModel)]="merchant.invoiceSetting.sendEmail"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Send Sms</td>
-                                        <td><input type="checkbox" name="sendSms" [(ngModel)]="merchant.invoiceSetting.sendSms"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Add Items</td>
-                                        <td><input type="checkbox" name="addItems" [(ngModel)]="merchant.invoiceSetting.addItems"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>CC Me</td>
-                                        <td><input type="checkbox" name="ccMe" [(ngModel)]="merchant.invoiceSetting.ccMe"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Refund on Credit Note</td>
-                                        <td><input type="checkbox" name="refundCreditNote" [(ngModel)]="merchant.invoiceSetting.refundCreditNote"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Expiry Days</td>
-                                        <td><input class="form-control" name="expiryDays" [(ngModel)]="merchant.invoiceSetting.expiryDays" type="number" required /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email Subject</td>
-                                        <td><input class="form-control" name="emailSubject" [(ngModel)]="merchant.invoiceSetting.emailSubject" required /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email Note</td>
-                                        <td><input class="form-control" name="emailNote" [(ngModel)]="merchant.invoiceSetting.emailNote" required /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Auto Remind</td>
-                                        <td><input type="checkbox" name="autoRemind" [(ngModel)]="merchant.invoiceSetting.autoRemind"></td>
-                                    </tr>
-                                    <tr *ngIf="merchant.invoiceSetting.autoRemind">
-                                        <td>Remind Days (between 1 to 7)</td>
-                                        <td><input name="remindDays" type="number" step="1" class="form-control" [(ngModel)]="merchant.invoiceSetting.remindDays"></td>
-                                    </tr>
-                                </table>
-                            </fieldset>
-                        </form>
-                    </div>
-                    <div *ngIf="editPayPrefs" class="card-footer">
-                        <div class="input-group">
-                            <span class="input-group-btn">
-                                <button [disabled]="!payPrefsForm.valid" (click)="saveInvoiceSetting()" class="btn btn-info">Save</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="card-body">
+            <fieldset [disabled]="!editPaySets">
+              <div class="form-group">
+                <label class="control-label">RazorPay Merchant Id</label>
+                <input class="form-control" [(ngModel)]="merchant.paymentSetting.rzpMerchantId" />
+              </div>
+              <div class="form-group">
+                <label class="control-label">RazorPay Key Id</label>
+                <input class="form-control" [(ngModel)]="merchant.paymentSetting.rzpKeyId" />
+              </div>
+              <div class="form-group">
+                <label class="control-label">RazorPay Secret Id</label>
+                <input class="form-control" [(ngModel)]="merchant.paymentSetting.rzpSecretId" />
+              </div>
+            </fieldset>
+          </div>
+          <div *ngIf="editPaySets" class="card-footer">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button (click)="savePaymentSetting()" class="btn btn-info">Save</button>
+              </span>
             </div>
+          </div>
         </div>
-        <br>
+        <div class="card card-warning">
+          <div class="card-header with-border">
+            <div class="row">
+              <div class="col-md-8">
+                <h5 class="card-title">Custom Params</h5>
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-flat btn-info btn-sm pull-right" (click)="newParamModal()" title="Add Param">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Param Name</th>
+                  <th>Provider</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let param of merchant.invoiceSetting.customParams">
+                  <td>{{param.paramName}}</td>
+                  <td>{{param.provider}}</td>
+                  <td>
+                    <button (click)="deleteParam(param.id, param.paramName)" class="btn btn-flat btn-danger btn-sm">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card card-warning">
+          <div class="card-header with-border">
+            <div class="row">
+              <div class="col-md-8">
+                <h5 class="card-title">Invoice Preference</h5>
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-flat btn-warning btn-sm pull-right" (click)="editPayPrefs = !editPayPrefs"
+                  title="Edit Settings">
+                  <i class="fa fa-pencil"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <form #payPrefsForm="ngForm">
+              <fieldset [disabled]="!editPayPrefs">
+                <table class="table table-striped table-bordered">
+                  <tr>
+                    <td>Send Email</td>
+                    <td><input type="checkbox" name="sendEmail" [(ngModel)]="merchant.invoiceSetting.sendEmail"></td>
+                  </tr>
+                  <tr>
+                    <td>Send Sms</td>
+                    <td><input type="checkbox" name="sendSms" [(ngModel)]="merchant.invoiceSetting.sendSms"></td>
+                  </tr>
+                  <tr>
+                    <td>Add Items</td>
+                    <td><input type="checkbox" name="addItems" [(ngModel)]="merchant.invoiceSetting.addItems"></td>
+                  </tr>
+                  <tr>
+                    <td>CC Me</td>
+                    <td><input type="checkbox" name="ccMe" [(ngModel)]="merchant.invoiceSetting.ccMe"></td>
+                  </tr>
+                  <tr>
+                    <td>Refund on Credit Note</td>
+                    <td><input type="checkbox" name="refundCreditNote"
+                        [(ngModel)]="merchant.invoiceSetting.refundCreditNote"></td>
+                  </tr>
+                  <tr>
+                    <td>Expiry Days</td>
+                    <td><input class="form-control" name="expiryDays" [(ngModel)]="merchant.invoiceSetting.expiryDays"
+                        type="number" required /></td>
+                  </tr>
+                  <tr>
+                    <td>Email Subject</td>
+                    <td><input class="form-control" name="emailSubject"
+                        [(ngModel)]="merchant.invoiceSetting.emailSubject" required /></td>
+                  </tr>
+                  <tr>
+                    <td>Email Note</td>
+                    <td><input class="form-control" name="emailNote" [(ngModel)]="merchant.invoiceSetting.emailNote"
+                        required /></td>
+                  </tr>
+                  <tr>
+                    <td>Auto Remind</td>
+                    <td><input type="checkbox" name="autoRemind" [(ngModel)]="merchant.invoiceSetting.autoRemind"></td>
+                  </tr>
+                  <tr *ngIf="merchant.invoiceSetting.autoRemind">
+                    <td>Remind Days (between 1 to 7)</td>
+                    <td><input name="remindDays" type="number" step="1" class="form-control"
+                        [(ngModel)]="merchant.invoiceSetting.remindDays"></td>
+                  </tr>
+                </table>
+              </fieldset>
+            </form>
+          </div>
+          <div *ngIf="editPayPrefs" class="card-footer">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button [disabled]="!payPrefsForm.valid" (click)="saveInvoiceSetting()"
+                  class="btn btn-info">Save</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <br>
+  </div>
 </div>
 <div bsModal #createParamModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
-	<div class="modal-dialog" *ngIf="newparam">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Create New Custom Param</h5>
-				<button type="button" title="Close" (click)="createParamModal.hide()"><i class="fa fa-times"></i></button>
-			</div>
-			<div class="modal-body">
-				<form #newParamForm='ngForm'>
-					<div class="row">
-						<div class="col-md-12">
-							<table class="table table-bordered table-striped">
-								<tbody>
-									<tr>
-										<td>
-											<div class="form-group">
-												<label class="control-label">Param Name</label>
-												<input name="newParamName" class="form-control" placeholder="Param Name" [(ngModel)]="newparam.paramName" pattern="{{patterns.paramNamePattern}}" required/>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="form-group">
-												<label class="control-label">Provider</label>
-												<select name="newParamProvider" class="form-control" [(ngModel)]="newparam.provider" required>
-													<option value="OPTIONAL">OPTIONAL</option>
-													<option value="MERCHANT">MERCHANT</option>
-													<option value="CONSUMER">CONSUMER</option>
-												</select>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-info" [disabled]="!newParamForm.valid" (click)="addParam(newParamForm)">Add</button>
-				<button type="button" class="btn btn-danger" (click)="createParamModal.hide()">Close</button>
-			</div>
-		</div>
-	</div>
+  <div class="modal-dialog" *ngIf="newparam">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create New Custom Param</h5>
+        <button type="button" title="Close" (click)="createParamModal.hide()"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form #newParamForm='ngForm'>
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table table-bordered table-striped">
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="form-group">
+                        <label class="control-label">Param Name</label>
+                        <input name="newParamName" class="form-control" placeholder="Param Name"
+                          [(ngModel)]="newparam.paramName" pattern="{{patterns.paramNamePattern}}" required />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="form-group">
+                        <label class="control-label">Provider</label>
+                        <select name="newParamProvider" class="form-control" [(ngModel)]="newparam.provider" required>
+                          <option value="OPTIONAL">OPTIONAL</option>
+                          <option value="MERCHANT">MERCHANT</option>
+                          <option value="CONSUMER">CONSUMER</option>
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" [disabled]="!newParamForm.valid"
+          (click)="addParam(newParamForm)">Add</button>
+        <button type="button" class="btn btn-danger" (click)="createParamModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
 </div>

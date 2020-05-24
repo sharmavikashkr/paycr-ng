@@ -23,6 +23,7 @@ import { TaxMaster } from "../../shared/models/tax-master";
 import { SettingsService } from "../../shared/services/merchant/settings.service";
 import { MerchantService } from '../../shared/services';
 import { ReportsService } from '../../shared/services/merchant/reports.service';
+import { TaxService } from '../../shared/services/merchant/tax.service';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { ReportsService } from '../../shared/services/merchant/reports.service';
     MerchantService,
     ReportsService,
     SettingsService,
+    TaxService
   ],
 })
 export class MerchantModule { }

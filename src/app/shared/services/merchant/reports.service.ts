@@ -13,6 +13,10 @@ export class ReportsService {
     return this.httpClient.get<Report[]>(environment.APP_URL + '/reports');
   }
 
+  createReport(report: Report): Observable<any> {
+    return this.httpClient.post<any>(environment.APP_URL + '/reports/new', report);
+  }
+
   loadReport(report: Report): Observable<any[]> {
     return this.httpClient.post<any[]>(environment.APP_URL + '/reports/load', report);
   }

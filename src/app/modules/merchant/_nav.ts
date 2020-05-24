@@ -190,6 +190,24 @@ export const navItems: INavData[] = [
     attributes: { permission: "ops" }
   },
   {
+    name: "Tax",
+    url: "/merchant/tax",
+    icon: "icon-briefcase",
+    attributes: { permission: "finance" },
+    children: [
+      {
+        name: "GSTR1",
+        url: "/merchant/tax/gstr1",
+        icon: "icon-home",
+      },
+      {
+        name: "GSTR2",
+        url: "/merchant/tax/gstr2",
+        icon: "icon-note",
+      }
+    ],
+  },
+  {
     name: "Settings",
     url: "/merchant/settings",
     icon: "icon-settings",

@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Token } from "../../shared/models/token";
-import { CookieService } from "ngx-cookie-service";
 import { AccessService } from "../../shared/services/merchant/access.service";
 import { CommonService } from "../../shared/services/common/common.service";
 import { PcUser } from "../../shared/models/pc-user";

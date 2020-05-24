@@ -6,9 +6,9 @@ import { Address } from "../../../../../../shared/models/address";
 import { SettingsService } from "../../../../../../shared/services/merchant/settings.service";
 import { Patterns } from "../../../../../../shared/patterns/patterns";
 import { NgForm } from "@angular/forms";
+import { NotifierService } from 'angular-notifier';
 
 @Component({
-  selector: "app-account",
   templateUrl: "./account.component.html",
   styleUrls: ["./account.component.scss"],
 })
@@ -19,6 +19,7 @@ export class AccountComponent implements OnInit {
   @ViewChild("editAccAddressModal") public editAccAddressModal: ModalDirective;
 
   constructor(
+    private notifier: NotifierService,
     public merchant: Merchant,
     public patterns: Patterns,
     private settingsService: SettingsService
@@ -47,6 +48,9 @@ export class AccountComponent implements OnInit {
       .subscribe((response: Merchant) => {
         this.merchant.deepCopy(response);
         this.editAccSets = false;
+        this.notifier.notify("success", "Details updated successfully");
+      }, error => {
+        this.notifier.notify("error", error.error.message);
       });
   }
 
@@ -55,6 +59,9 @@ export class AccountComponent implements OnInit {
       .saveAddress(this.address)
       .subscribe((response: Merchant) => {
         this.merchant.deepCopy(response);
+        this.notifier.notify("success", "Address updated successfully");
+      }, error => {
+        this.notifier.notify("error", error.error.message);
       });
     this.address = new Address();
     this.editAccAddressModal.hide();

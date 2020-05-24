@@ -1,13 +1,12 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppAsideModule, AppBreadcrumbModule, AppHeaderModule, AppFooterModule, AppSidebarModule } from "@coreui/angular";
 import { NgbAlertModule, NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 import { NotifierModule } from "angular-notifier";
-import { CookieService } from "ngx-cookie-service";
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app.routing";
@@ -23,6 +22,8 @@ import { MerchantAuthGuard } from "./shared/guards/merchantauth.guard";
 // Import 3rd party components
 import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { TabsModule } from "ngx-bootstrap/tabs";
+import { CookieService } from "ngx-cookie-service";
+import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 import { ChartsModule } from "ng2-charts";
 import { CommonService } from "./shared/services/common/common.service";
 import { AccessInterceptor } from "./shared/interceptors/access.interceptor";
@@ -39,6 +40,7 @@ import { PcUser } from "./shared/models/pc-user";
     AppFooterModule,
     AppHeaderModule,
     AppSidebarModule,
+    MatProgressBarModule,
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
@@ -72,5 +74,8 @@ import { PcUser } from "./shared/models/pc-user";
     PcUser,
   ],
   bootstrap: [AppComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ]
 })
 export class AppModule { }

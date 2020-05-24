@@ -11,4 +11,8 @@ export class CommonService {
   getUser(): Observable<PcUser> {
     return this.httpClient.get<PcUser>(environment.APP_URL + "/user");
   }
+
+  typeList(type: string): Observable<string[]> {
+    return this.httpClient.get<string[]>(environment.APP_URL + '/static/enum/' + type)
+  }
 }

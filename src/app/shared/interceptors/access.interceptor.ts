@@ -7,14 +7,16 @@ import {
 } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable, throwError } from "rxjs";
-import { map, catchError } from "rxjs/operators";
+import { map, catchError, tap } from "rxjs/operators";
 import { NotifierService } from 'angular-notifier';
+import { PcApp } from '../models/pc-app';
 
 @Injectable()
 export class AccessInterceptor implements HttpInterceptor {
 
   constructor(
     private router: Router,
+    private pcApp: PcApp,
     private notifier: NotifierService) { }
 
   intercept(
@@ -35,6 +37,7 @@ export class AccessInterceptor implements HttpInterceptor {
     request = request.clone({
       headers: request.headers.set("Accept", "application/json"),
     });
+    this.pcApp.loading = true;
     return next.handle(request).pipe(
       catchError((error) => {
         console.log(error);
@@ -42,9 +45,9 @@ export class AccessInterceptor implements HttpInterceptor {
           this.notifier.notify("error", "Access Denied");
           localStorage.removeItem("ACCESS_TOKEN");
           this.router.navigate(["/login"]);
+        } else {
           return throwError(error);
         }
-        return throwError(error);
       })
     );
   }

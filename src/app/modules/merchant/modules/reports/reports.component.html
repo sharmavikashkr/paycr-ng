@@ -1,13 +1,13 @@
 <div>
   <div class="row">
     <div class="col-sm-3 col-sm-offset-8">
-      <button class="btn btn-info" data-toggle="modal" data-target="#createReportModal">
+      <button class="btn btn-info" data-toggle="modal" data-target="#createReportModal" (click)="newReport()">
         <i class="fa fa-plus"></i> Report
       </button>
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-4" *ngFor="let report of reports">
+    <div class="col-sm-3" *ngFor="let report of reports">
       <br>
       <div class="card-header" [ngClass]="{'bg-primary': report.schedule == null, 'bg-danger':report.schedule != null}"
         style="border: 1px solid black;">
@@ -46,8 +46,7 @@
             </button>
           </div>
           <div class="col-md-1 col-xs-2" *ngIf="report.merchant != null">
-            <button type="button" class="btn btn-transparent p-0" title="Delete Report"
-              (click)="deleteReport(report.id)">
+            <button type="button" class="btn btn-transparent p-0" title="Delete Report" (click)="deleteReport(report)">
               <i class="fa fa-trash"></i>
             </button>
           </div>
@@ -68,7 +67,7 @@
             <small>
               <div class="row">
                 <div class="col-md-6">
-                  <p style="color:black;">Invoice Details</p>
+                  <p style="color:black;">Report Details</p>
                   <div>Report Type: <span style="color:black;">{{report.reportType}}</span></div>
                   <div>Time Range: <span style="color:black;">{{report.timeRange}}</span></div>
                   <div *ngIf="report.payType != null">Pay Type: <span style="color:black;">{{report.payType}}</span>
@@ -119,6 +118,85 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div bsModal #newReportModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create New Report</h5>
+        <button type="button" (click)="newReportModal.hide()" title="Close"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <form #createReportForm='ngForm'>
+              <table class="table table-striped table-bordered">
+                <tbody>
+                  <tr>
+                    <td><strong>Name</strong></td>
+                    <td>
+                      <input class="form-control" [(ngModel)]="newreport.name" name="name" placeholder="Report Name"
+                        pattern="{{patterns.namePattern}}" required />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Description</strong></td>
+                    <td>
+                      <input class="form-control" [(ngModel)]="newreport.description" name="description"
+                        placeholder="Report Description" pattern="{{patterns.namePattern}}" required />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Time Range</strong></td>
+                    <td>
+                      <select class="form-control" [(ngModel)]="newreport.timeRange" name="timeRange" required>
+                        <option *ngFor="let timeRange of timeRanges" value="{{timeRange}}">{{timeRange}}</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Report Type</strong></td>
+                    <td>
+                      <select class="form-control" [(ngModel)]="newreport.reportType" name="reportType" required>
+                        <option *ngFor="let reportType of reportTypes" value="{{reportType}}">{{reportType}}</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pay Type</strong></td>
+                    <td>
+                      <select class="form-control" [(ngModel)]="newreport.payType" name="payType">
+                        <option value="SALE">SALE</option>
+                        <option value="REFUND">REFUND</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pay Mode</strong></td>
+                    <td>
+                      <select class="form-control" [(ngModel)]="newreport.payMode" name="payMode">
+                        <option *ngFor="let payMode of payModes" value="{{payMode}}">{{payMode}}
+                        </option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" [disabled]="!createReportForm.valid"
+          (click)="createReport()">Create</button>
+        <button type="button" class="btn btn-info" [disabled]="!createReportForm.valid"
+          (click)="loadReport(newreport)">Load</button>
+        <button type="button" class="btn btn-danger" (click)="newReportModal.hide()">Close</button>
       </div>
     </div>
   </div>

@@ -1,9 +1,11 @@
-import { Component, OnInit } from "@angular/core";
-import { Merchant } from '../../../../shared/models/merchant';
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ReportsService } from '../../../../shared/services/merchant/reports.service';
 import { Report } from '../../../../shared/models/report';
 import { NotifierService } from 'angular-notifier';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
+import { ModalDirective } from "ngx-bootstrap/modal";
+import { Patterns } from '../../../../shared/patterns/patterns';
+import { CommonService } from '../../../../shared/services/common/common.service';
 
 @Component({
   templateUrl: "./reports.component.html",
@@ -14,6 +16,11 @@ export class ReportsComponent implements OnInit {
   public reports: Report[];
   public loadedReport: Report;
   public loadedReportData: any[];
+  public newreport: Report = new Report();
+  public timeRanges: string[] = [];
+  public reportTypes: string[] = [];
+  public payModes: string[] = [];
+  @ViewChild("newReportModal") public newReportModal: ModalDirective;
 
   public lineChart4Data: Array<any> = [
     {
@@ -89,12 +96,14 @@ export class ReportsComponent implements OnInit {
 
   constructor(
     private notifier: NotifierService,
-    public merchant: Merchant,
-    private reportsService: ReportsService
+    public patterns: Patterns,
+    private reportsService: ReportsService,
+    private commonService: CommonService
   ) { }
 
   ngOnInit() {
     this.fetchReports();
+    this.fetchTypeLists();
   }
 
   fetchReports() {
@@ -103,6 +112,33 @@ export class ReportsComponent implements OnInit {
     }, error => {
       this.notifier.notify("error", error.error.message);
     });
+  }
+
+  fetchTypeLists() {
+    this.commonService.typeList('timeranges').subscribe(reponse => {
+      this.timeRanges = reponse;
+    });
+    this.commonService.typeList('reporttypes').subscribe(reponse => {
+      this.reportTypes = reponse;
+    });
+    this.commonService.typeList('paymodes').subscribe(reponse => {
+      this.payModes = reponse;
+    });
+  }
+
+  newReport() {
+    this.newReportModal.show();
+  }
+
+  createReport() {
+    this.reportsService.createReport(this.newreport).subscribe(response => {
+      this.newreport = new Report();
+      this.newReportModal.hide();
+      this.notifier.notify("success", "Report created successfully");
+      this.fetchReports();
+    }, error => {
+      this.notifier.notify("error", error.error.message);
+    })
   }
 
   loadReport(report: Report) {
@@ -137,12 +173,14 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-  deleteReport(reportId: number) {
-    this.reportsService.deleteReport(reportId).subscribe(response => {
-      this.notifier.notify("success", "Report deleted successfully");
-      this.fetchReports();
-    }, error => {
-      this.notifier.notify("error", error.error.message);
-    });
+  deleteReport(report: Report) {
+    if (confirm("Delete: " + report.name + "?")) {
+      this.reportsService.deleteReport(report.id).subscribe(response => {
+        this.notifier.notify("success", "Report deleted successfully");
+        this.fetchReports();
+      }, error => {
+        this.notifier.notify("error", error.error.message);
+      });
+    }
   }
 }
