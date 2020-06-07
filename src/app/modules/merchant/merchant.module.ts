@@ -24,6 +24,7 @@ import { SettingsService } from "../../shared/services/merchant/settings.service
 import { MerchantService } from '../../shared/services';
 import { ReportsService } from '../../shared/services/merchant/reports.service';
 import { TaxService } from '../../shared/services/merchant/tax.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { TaxService } from '../../shared/services/merchant/tax.service';
     AppSidebarModule,
     PerfectScrollbarModule,
     PerfectScrollbarModule,
+    MatProgressBarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,

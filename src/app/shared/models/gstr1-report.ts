@@ -1,5 +1,6 @@
 
 export class Gstr1Report {
+    period: string;
     b2cSmall: B2CSmall[];
     b2cLarge: B2CLarge[];
     b2b: B2B[];

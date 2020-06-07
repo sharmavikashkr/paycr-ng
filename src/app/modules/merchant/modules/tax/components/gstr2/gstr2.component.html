@@ -14,8 +14,8 @@
           style="vertical-align: top;">Load</button>
       </div>
       <div class="col-md-4 hidden-xs text-center">
-        <div *ngIf="gstr2Report != null">
-          <strong>{{period}}</strong>
+        <div>
+          GSTR2 Report: <strong *ngIf="gstr2Report != null">{{gstr2Report.period}}</strong>
         </div>
       </div>
       <div class="col-md-4 col-xs-6">

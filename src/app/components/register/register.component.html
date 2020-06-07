@@ -31,7 +31,7 @@
                   <input type="number" class="form-control" name="mobile" [(ngModel)]="merchant.mobile"
                     placeholder="Mobile" autocomplete="mobile" pattern="{{ patterns.mobilePattern }}" required />
                 </div>
-                <!--<div class="input-group mb-3">
+                <!-- <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
                       ><i class="icon-lock"></i
@@ -58,11 +58,14 @@
                     autocomplete="new-password"
                     required
                   />
-                </div>-->
+                </div> -->
                 <p>
                   By registering with PayCr, you agree to our <span><a [routerLink]="['/terms']">terms</a></span>
                   and
                   <span><a [routerLink]="['/policy']">policy</a></span>
+                </p>
+                <p>
+                  Already signed up? <span><a [routerLink]="['/login']">Login here</a></span>
                 </p>
                 <button (click)="register()" class="btn btn-block btn-success" [disabled]="!registerForm.valid">
                   Create Account

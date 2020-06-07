@@ -4,13 +4,13 @@ export const navItems: INavData[] = [
   {
     name: "Dashboard",
     url: "/merchant",
-    icon: "icon-speedometer",
+    icon: "icon-graph",
     badge: {
       variant: "info",
       text: "NEW",
     },
   },
-  {
+  /*{
     title: true,
     name: "Theme",
   },
@@ -182,6 +182,68 @@ export const navItems: INavData[] = [
       variant: "info",
       text: "NEW",
     },
+  },*/
+  {
+    name: "Icons",
+    url: "/merchant/icons",
+    icon: "icon-star",
+    children: [
+      {
+        name: "CoreUI Icons",
+        url: "/merchant/icons/coreui-icons",
+        icon: "icon-star",
+        badge: {
+          variant: "success",
+          text: "NEW",
+        },
+      },
+      {
+        name: "Flags",
+        url: "/merchant/icons/flags",
+        icon: "icon-star",
+      },
+      {
+        name: "Font Awesome",
+        url: "/merchant/icons/font-awesome",
+        icon: "icon-star",
+        badge: {
+          variant: "secondary",
+          text: "4.7",
+        },
+      },
+      {
+        name: "Simple Line Icons",
+        url: "/merchant/icons/simple-line-icons",
+        icon: "icon-star",
+      },
+    ],
+  },
+  {
+    name: "Invoice",
+    url: "/merchant/invoice",
+    icon: "icon-briefcase",
+    children: [
+      {
+        name: "Invoices",
+        url: "/merchant/invoice/invoices",
+        icon: "icon-home",
+      },
+      {
+        name: "Payments",
+        url: "/merchant/invoice/payment",
+        icon: "fa fa-rupee",
+      },
+      {
+        name: "Consumers",
+        url: "/merchant/invoice/counsumers",
+        icon: "icon-people",
+      },
+      {
+        name: "Inventory",
+        url: "/merchant/invoice/inventory",
+        icon: "icon-layers",
+      }
+    ],
   },
   {
     name: "Reports",
@@ -230,7 +292,7 @@ export const navItems: INavData[] = [
       },
     ],
   },
-  {
+  /*{
     divider: true,
   },
   {
@@ -273,5 +335,5 @@ export const navItems: INavData[] = [
       text: "NEW",
     },
     attributes: { disabled: true },
-  },
+  },*/
 ];

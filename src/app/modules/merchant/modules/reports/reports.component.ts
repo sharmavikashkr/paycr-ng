@@ -142,7 +142,6 @@ export class ReportsComponent implements OnInit {
   }
 
   loadReport(report: Report) {
-    this.notifier.notify("success", "Loading Report: " + report.name);
     this.reportsService.loadReport(report).subscribe(response => {
       if (response == null || response.length == 0) {
         this.notifier.notify("error", "No data found");

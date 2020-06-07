@@ -5,6 +5,7 @@ import { AccessService } from "../../shared/services/merchant/access.service";
 import { CommonService } from "../../shared/services/common/common.service";
 import { PcUser } from "../../shared/models/pc-user";
 import { NotifierService } from 'angular-notifier';
+import { PcApp } from '../../shared/models/pc-app';
 
 @Component({
   templateUrl: "login.component.html",
@@ -16,6 +17,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private notifier: NotifierService,
+    public pcApp: PcApp,
     private token: Token,
     private user: PcUser,
     private accessService: AccessService,

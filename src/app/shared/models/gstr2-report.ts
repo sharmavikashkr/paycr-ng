@@ -1,5 +1,6 @@
 
 export class Gstr2Report {
+    period: string;
     b2bR: Gstr2B2BR[];
     b2bUr: Gstr2B2BUR[];
     b2bRNote: Gstr2B2BRNote[];

@@ -5,6 +5,7 @@ import { PcUser } from "../../shared/models/pc-user";
 import { navItems } from "./_nav";
 import { INavData } from "@coreui/angular";
 import { Router } from "@angular/router";
+import { PcApp } from '../../shared/models/pc-app';
 
 @Component({
   selector: "app-merchant",
@@ -19,6 +20,7 @@ export class MerchantComponent implements OnInit {
 
   constructor(
     public router: Router,
+    public pcApp: PcApp,
     public merchant: Merchant,
     public user: PcUser,
     private merchantService: MerchantService
