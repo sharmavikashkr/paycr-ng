@@ -25,6 +25,7 @@ import { MerchantService } from '../../shared/services';
 import { ReportsService } from '../../shared/services/merchant/reports.service';
 import { TaxService } from '../../shared/services/merchant/tax.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { SalesService } from '../../shared/services/merchant/sales.service';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     Merchant,
     TaxMaster,
     MerchantService,
+    SalesService,
     ReportsService,
     SettingsService,
     TaxService

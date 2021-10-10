@@ -219,28 +219,55 @@ export const navItems: INavData[] = [
     ],
   },
   {
-    name: "Invoice",
-    url: "/merchant/invoice",
+    name: "Sales",
+    url: "/merchant/sales",
     icon: "icon-briefcase",
     children: [
       {
         name: "Invoices",
-        url: "/merchant/invoice/invoices",
+        url: "/merchant/sales/invoices",
         icon: "icon-home",
       },
       {
         name: "Payments",
-        url: "/merchant/invoice/payment",
+        url: "/merchant/sales/payments",
         icon: "fa fa-rupee",
       },
       {
         name: "Consumers",
-        url: "/merchant/invoice/counsumers",
+        url: "/merchant/sales/consumers",
         icon: "icon-people",
       },
       {
         name: "Inventory",
-        url: "/merchant/invoice/inventory",
+        url: "/merchant/sales/inventory",
+        icon: "icon-layers",
+      }
+    ],
+  },
+  {
+    name: "Purchases",
+    url: "/merchant/purchases",
+    icon: "icon-briefcase",
+    children: [
+      {
+        name: "Expenses",
+        url: "/merchant/purchases/expenses",
+        icon: "icon-home",
+      },
+      {
+        name: "Payments",
+        url: "/merchant/purchases/payments",
+        icon: "fa fa-rupee",
+      },
+      {
+        name: "Suppliers",
+        url: "/merchant/purchases/suppliers",
+        icon: "icon-people",
+      },
+      {
+        name: "Assets",
+        url: "/merchant/purchases/assets",
         icon: "icon-layers",
       }
     ],

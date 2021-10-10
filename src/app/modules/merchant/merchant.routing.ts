@@ -16,6 +16,8 @@ const routes: Routes = [
       { path: "notifications", loadChildren: () => import("./modules/notifications/notifications.module").then((m) => m.NotificationsModule) },
       { path: "theme", loadChildren: () => import("./modules/theme/theme.module").then((m) => m.ThemeModule) },
       { path: "widgets", loadChildren: () => import("./modules/widgets/widgets.module").then((m) => m.WidgetsModule) },
+      { path: "sales", loadChildren: () => import("./modules/sales/sales.module").then((m) => m.SalesModule), canActivate: [MerchantAuthGuard], data: { permission: "finance" } },
+      { path: "purchases", loadChildren: () => import("./modules/purchases/purchases.module").then((m) => m.PurchasesModule), canActivate: [MerchantAuthGuard], data: { permission: "finance" } },
       { path: "tax", loadChildren: () => import("./modules/tax/tax.module").then((m) => m.TaxModule), canActivate: [MerchantAuthGuard], data: { permission: "finance" } },
       { path: "reports", loadChildren: () => import("./modules/reports/reports.module").then((m) => m.ReportsModule), canActivate: [MerchantAuthGuard], data: { permission: "ops" } },
       { path: "settings", loadChildren: () => import("./modules/settings/settings.module").then((m) => m.SettingsModule), canActivate: [MerchantAuthGuard], data: { permission: "finance" } },
